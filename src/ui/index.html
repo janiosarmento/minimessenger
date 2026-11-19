@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self'; img-src https: http: data:;">
+  <title>MiniMessenger</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<!--
+  Texts come from src/locales/*.json:
+    data-i18n        -> textContent
+    data-i18n-html   -> innerHTML (locale files are bundled and trusted)
+    data-i18n-title  -> title attribute
+-->
+<body>
+  <nav id="sidebar">
+    <div id="service-list"></div>
+    <button id="settings-button" class="service-button" data-i18n-title="settings.tooltip">
+      <span class="gear">⚙︎</span>
+    </button>
+  </nav>
+
+  <main id="settings" hidden>
+    <h1 data-i18n="settings.title"></h1>
+
+    <section>
+      <h2 data-i18n="settings.services"></h2>
+      <table id="services-table">
+        <thead>
+          <tr>
+            <th data-i18n="settings.colName"></th>
+            <th data-i18n="settings.colUrl"></th>
+            <th data-i18n="settings.colIcon" data-i18n-title="settings.colIconTooltip"></th>
+            <th data-i18n="settings.colEnabled" data-i18n-title="settings.colEnabledTooltip"></th>
+            <th data-i18n="settings.colNotify" data-i18n-title="settings.colNotifyTooltip"></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="actions">
+        <button id="add-service" data-i18n="settings.addService"></button>
+        <span class="spacer"></span>
+        <span id="save-status" role="status"></span>
+        <button id="revert" data-i18n="settings.revert" disabled></button>
+        <button id="save" class="primary" data-i18n="settings.save" disabled></button>
+      </div>
+      <p class="hint" data-i18n="settings.hintLogin"></p>
+      <p class="hint" data-i18n-html="settings.hintIconHtml"></p>
+    </section>
+
+    <section>
+      <h2 data-i18n="settings.general"></h2>
+      <label class="checkbox-row">
+        <input type="checkbox" id="open-at-login">
+        <span data-i18n="settings.openAtLogin"></span>
+      </label>
+      <label class="select-row">
+        <span data-i18n="settings.language"></span>
+        <select id="language"></select>
+      </label>
+    </section>
+
+    <section>
+      <h2 data-i18n="settings.shortcuts"></h2>
+      <ul class="shortcuts">
+        <li data-i18n-html="settings.shortcutSwitchHtml"></li>
+        <li data-i18n-html="settings.shortcutCycleHtml"></li>
+        <li data-i18n-html="settings.shortcutReloadHtml"></li>
+        <li data-i18n-html="settings.shortcutZoomHtml"></li>
+        <li data-i18n-html="settings.shortcutSettingsHtml"></li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="ui.js"></script>
+</body>
+</html>

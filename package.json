@@ -1,0 +1,51 @@
+{
+  "name": "minimessenger",
+  "productName": "MiniMessenger",
+  "version": "0.1.0",
+  "description": "Minimal multi-messenger: web versions of WhatsApp, Telegram, Mattermost and friends in one window.",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --mac dir && codesign --force --deep --sign - dist/mac*/MiniMessenger.app",
+    "install-app": "bash scripts/install.sh"
+  },
+  "build": {
+    "appId": "local.minimessenger",
+    "productName": "MiniMessenger",
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": "dir",
+      "category": "public.app-category.social-networking",
+      "icon": "build/icon.icns",
+      "identity": null,
+      "hardenedRuntime": false,
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Web messengers use the microphone for voice messages and calls.",
+        "NSCameraUsageDescription": "Web messengers use the camera for video calls.",
+        "CFBundleDevelopmentRegion": "en",
+        "CFBundleLocalizations": [
+          "en",
+          "pt_BR"
+        ]
+      },
+      "extraResources": [
+        {
+          "from": "build/pt_BR.lproj",
+          "to": "pt_BR.lproj"
+        }
+      ]
+    },
+    "electronLanguages": [
+      "en",
+      "pt_BR"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0"
+  }
+}
