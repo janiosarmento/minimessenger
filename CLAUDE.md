@@ -129,7 +129,8 @@ build/icon.{png,icns}   generated app icon (committed; referenced by package.jso
 
 - Electron ≥ 45.4 has no postinstall: `node_modules/electron` downloads its binary on
   the first `require('electron')` (or `npx install-electron`).
-- The repo is public (MIT). No binaries are published; README explains building and `xattr`.
+- Public repo (MIT): github.com/janiosarmento/minimessenger (`origin`, SSH). No binaries
+  are published; README explains building and `xattr`.
 
 - No Apple Developer identity: `build.mac.identity: null` in electron-builder, then
   `codesign --force --deep --sign -` (ad-hoc), which Apple Silicon requires to run.
@@ -163,4 +164,3 @@ and reboot.
 
 - Hibernate rarely used services to save memory. This would stop their notifications,
   so never for the main ones.
-- Git remote: not configured yet; the user will pick one.
