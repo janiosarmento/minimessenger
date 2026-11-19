@@ -1,7 +1,6 @@
-<img src="docs/icon.png" alt="MiniMessenger icon" width="128" align="left">
-
 # MiniMessenger
 
+<img src="docs/icon.png" alt="MiniMessenger icon" width="128" align="left">
 Minimal macOS multi-messenger: the web versions of WhatsApp, Telegram, Facebook
 Messenger, Mattermost (or any other web app) in one window, with native
 notifications and unread badges in the sidebar and the Dock.
