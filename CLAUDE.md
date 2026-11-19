@@ -36,7 +36,7 @@ scripts/install.sh      build, copy to /Applications, clear quarantine xattr, ve
 scripts/make-icon.py    icon pipeline (Pillow + iconutil)
 assets/icon-source.png  original icon art (transparent PNG supplied by the user)
 build/pt_BR.lproj/      InfoPlist.strings (Portuguese mic/camera prompts), copied into the bundle
-docs/                   README images (screenshot-settings.png)
+docs/                   README images (screenshot-settings.png, icon.png = 256 px copy of build/icon.png)
 build/icon.{png,icns}   generated app icon (committed; referenced by package.json build.mac.icon)
 ```
 
