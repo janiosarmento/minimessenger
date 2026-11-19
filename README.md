@@ -6,6 +6,10 @@ notifications and unread badges in the sidebar and the Dock.
 
 A small, dependency-free alternative to Rambox/Ferdium, built with Electron.
 
+<p align="center">
+  <img src="docs/screenshot-settings.png" alt="MiniMessenger settings: service list, general options and shortcuts" width="800">
+</p>
+
 ## Features
 
 - One sidebar entry per service, each with its own isolated, persistent login.
