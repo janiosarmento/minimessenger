@@ -51,6 +51,10 @@ build/icon.{png,icns}   generated app icon (committed; referenced by package.jso
   a service's URL keeps its login. Deleting a service in settings calls
   `clearStorageData` on its partition; disabling keeps the data.
 - User agent: strips `Electron/x` and `MiniMessenger/x` so sites (WhatsApp) see plain Chrome.
+- Google sign-in (`accounts.google.com`) rejects embedded Chromium as "not secure", so
+  only there the app poses as Firefox: `webRequest` swaps the UA and drops `Sec-CH-UA*`,
+  and the preload patches `navigator` (UA passed via `additionalArguments`). The Firefox
+  version is computed from the date (4-week cadence) so it doesn't go stale.
 - Sidebar shows all services; disabled ones are dimmed and not clickable. Right-click
   on an icon opens a native menu (built in main via `ui:service-menu`): Refresh, and
   Disable/Enable, which goes through `applyServices` like the settings Save.

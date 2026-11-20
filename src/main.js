@@ -110,6 +110,20 @@ function cleanUserAgent(ua) {
     .replace(/\sminimessenger\/\S+/gi, '');
 }
 
+// Google's sign-in page rejects embedded Chromium ("This browser or app may not be
+// secure"), checking the user agent and the Sec-CH-UA client hints. It accepts Firefox,
+// which sends no client hints, so accounts.google.com gets a Firefox identity.
+const GOOGLE_LOGIN_URLS = ['https://accounts.google.com/*'];
+
+/** Firefox UA with a plausible current version (Firefox 100 shipped 2022-05-03, then every 4 weeks). */
+function firefoxUserAgent() {
+  const weeks = (Date.now() - Date.UTC(2022, 4, 3)) / (7 * 24 * 3600 * 1000);
+  const version = 100 + Math.max(0, Math.floor(weeks / 4) - 1); // one behind, never ahead
+  return `Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:${version}.0) Gecko/20100101 Firefox/${version}.0`;
+}
+
+const GOOGLE_LOGIN_UA = firefoxUserAgent();
+
 function persist() {
   try {
     config.save(state);
@@ -241,6 +255,15 @@ function configureSession(ses) {
 
   ses.setUserAgent(cleanUserAgent(ses.getUserAgent()));
 
+  ses.webRequest.onBeforeSendHeaders({ urls: GOOGLE_LOGIN_URLS }, (details, callback) => {
+    const headers = {};
+    for (const [name, value] of Object.entries(details.requestHeaders)) {
+      if (!/^sec-ch-ua/i.test(name)) headers[name] = value;
+    }
+    headers['User-Agent'] = GOOGLE_LOGIN_UA;
+    callback({ requestHeaders: headers });
+  });
+
   ses.setPermissionRequestHandler((wc, permission, callback, details) => {
     callback(allowPermission(wc, permission, details?.requestingUrl ?? wc?.getURL()));
   });
@@ -296,6 +319,7 @@ function createEntry(service) {
       nodeIntegration: false,
       backgroundThrottling: false, // keep hidden services connected
       spellcheck: true,
+      additionalArguments: [`--minimessenger-google-ua=${GOOGLE_LOGIN_UA}`],
     },
   });
 

@@ -58,11 +58,35 @@ function mainWorldPatch() {
   });
 }
 
-try {
+// On Google's sign-in page, look like Firefox to scripts too (main.js already rewrites
+// the request headers). Otherwise the login is rejected as an "insecure browser".
+function googleLoginPatch(ua) {
+  const define = (name, value) =>
+    Object.defineProperty(Navigator.prototype, name, { get: () => value, configurable: true });
+  define('userAgent', ua);
+  define('appVersion', ua.slice('Mozilla/'.length));
+  define('vendor', '');
+  define('userAgentData', undefined);
+  try {
+    delete window.chrome;
+  } catch {
+    // not deletable: leave it
+  }
+}
+
+function runInMainWorld(func, args = []) {
   if (typeof contextBridge.executeInMainWorld === 'function') {
-    contextBridge.executeInMainWorld({ func: mainWorldPatch });
+    contextBridge.executeInMainWorld({ func, args });
   } else {
-    webFrame.executeJavaScript(`(${mainWorldPatch.toString()})();`);
+    webFrame.executeJavaScript(`(${func.toString()})(...${JSON.stringify(args)});`);
+  }
+}
+
+try {
+  runInMainWorld(mainWorldPatch);
+  const uaArg = process.argv.find((arg) => arg.startsWith('--minimessenger-google-ua='));
+  if (uaArg && window.location.hostname === 'accounts.google.com') {
+    runInMainWorld(googleLoginPatch, [uaArg.slice(uaArg.indexOf('=') + 1)]);
   }
 } catch (err) {
   console.error('minimessenger: failed to patch page', err);
